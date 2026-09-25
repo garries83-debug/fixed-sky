@@ -6,8 +6,63 @@
   <meta name="theme-color" content="#05060a" />
   <title>Fixed Sky — why the stars don't flip</title>
   <meta name="description" content="Interactive 3D explainer: Earth spins and orbits the Sun, but the stars stay put because they are unimaginably far away. Polaris stays north. The Southern Cross stays south." />
+  <style>
+    :root { --void:#05060a; --panel:#0c1018; --paper:#e8edf4; --mute:#8b96a8; --teal:#3dcaa6; --gold:#f0c14b; --rose:#e07a7a; --ice:#9ec8ff; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--void); color: var(--paper); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; overflow: hidden; }
+    canvas { display: block; }
+    #ui { position: fixed; inset: 0; pointer-events: none; display: grid; grid-template-rows: auto 1fr auto; }
+    header, footer { pointer-events: auto; }
+    header { padding: 14px 16px 8px; background: linear-gradient(180deg, rgba(5,6,10,.92), rgba(5,6,10,0)); }
+    header h1 { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: var(--teal); }
+    header p { font-size: 13px; color: var(--mute); margin-top: 4px; max-width: 42rem; line-height: 1.4; }
+    #hud { align-self: start; justify-self: start; margin: 0 12px; max-width: min(420px, calc(100vw - 24px)); background: rgba(12,16,24,.78); border: 1px solid rgba(232,237,244,.08); backdrop-filter: blur(10px); border-radius: 14px; padding: 12px 14px; pointer-events: auto; }
+    #hud h2 { font-size: 14px; font-weight: 650; margin-bottom: 6px; }
+    #hud p { font-size: 13px; color: var(--mute); line-height: 1.45; }
+    #hud .stat { margin-top: 8px; font-size: 12px; color: var(--ice); font-variant-numeric: tabular-nums; }
+    footer { padding: 8px 12px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(0deg, rgba(5,6,10,.95), rgba(5,6,10,0)); }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    button { appearance: none; background: #151b27; color: var(--paper); border: 1px solid rgba(232,237,244,.12); border-radius: 999px; padding: 8px 12px; font-size: 13px; cursor: pointer; }
+    button.active { background: var(--teal); color: #052018; border-color: transparent; font-weight: 650; }
+    label.slider { display: flex; align-items: center; gap: 8px; background: #151b27; border: 1px solid rgba(232,237,244,.12); border-radius: 999px; padding: 6px 12px; font-size: 12px; color: var(--mute); }
+    input[type=range] { width: 110px; accent-color: var(--teal); }
+    .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; font-size: 11px; color: var(--mute); }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+    .hint { font-size: 11px; color: #5d6778; margin-top: 6px; }
+    @media (max-width: 640px) { header h1 { font-size: 13px; } header p { display: none; } }
+  </style>
 </head>
 <body>
-<p>placeholder</p>
+  <div id="ui">
+    <header>
+      <h1>Fixed Sky</h1>
+      <p>Earth spins and goes around the Sun. The stars barely move because they are so far away. The axis keeps pointing the same way — so south stays south.</p>
+    </header>
+    <div id="hud">
+      <h2 id="title">From space</h2>
+      <p id="copy">The gold line is Earth's axis. It stays aimed at the same point in the sky all year. That is why the North Star stays north and the Southern Cross stays south.</p>
+      <div class="stat" id="stat">Month · March · autumn in Victoria</div>
+      <div class="legend">
+        <span><i class="dot" style="background:#f0c14b"></i>Sun</span>
+        <span><i class="dot" style="background:#9ec8ff"></i>Polaris</span>
+        <span><i class="dot" style="background:#3dcaa6"></i>Southern Cross</span>
+        <span><i class="dot" style="background:#e07a7a"></i>Orion</span>
+      </div>
+      <div class="hint">Drag to look around · pinch to zoom</div>
+    </div>
+    <footer>
+      <div class="row">
+        <button id="btnSpace" class="active">Space</button>
+        <button id="btnSouth">Night sky · south</button>
+        <button id="btnNorth">Night sky · north</button>
+        <label class="slider">Month <input id="month" type="range" min="0" max="11.9" step="0.02" value="2.5" /> <span id="monthLabel">Mar</span></label>
+        <label class="slider">Spin <input id="speed" type="range" min="0" max="4" step="0.1" value="1" /></label>
+        <button id="btnPause">Pause</button>
+        <button id="btnParallax">Exaggerate distance</button>
+      </div>
+    </footer>
+  </div>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
